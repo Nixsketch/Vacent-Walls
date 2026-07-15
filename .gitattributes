@@ -1,0 +1,4 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+packages/manifest.json !text !filter !merge !diff
+*.json !text !filter !merge !diff
