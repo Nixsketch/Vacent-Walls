@@ -853,7 +853,7 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 49812
+    - m_Data: 47798
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -887,7 +887,7 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 49812
+    - m_Data: 47798
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1575,20 +1575,6 @@ MonoBehaviour:
       layout: 4
       size: {x: 0, y: 0}
       sizeOverridden: 0
-    - dockPosition: 1
-      containerId: overlay-container--right
-      displayed: 0
-      id: unity-spline-inspector
-      index: 11
-      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
-      floating: 0
-      collapsed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      layout: 4
-      size: {x: 0, y: 0}
-      sizeOverridden: 0
     m_ContainerData:
     - containerId: overlay-toolbar__top
       scrollOffset: 0
@@ -1632,7 +1618,7 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 37.361443, y: 4.644085, z: -11.714993}
+    m_Target: {x: 77.686775, y: 3.3251987, z: -46.669}
     speed: 2
     m_Value: {x: 77.686775, y: 3.3251987, z: -46.669}
   m_RenderMode: 0
@@ -1680,11 +1666,11 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.16586635, y: 0.4258606, z: -0.07919856, w: -0.8862033}
+    m_Target: {x: -0.038718812, y: 0.5285718, z: -0.023528408, w: -0.8479718}
     speed: 2
     m_Value: {x: -0.038718816, y: 0.5285718, z: -0.023528408, w: -0.8479718}
   m_Size:
-    m_Target: 45.061142
+    m_Target: 0.8660254
     speed: 2
     m_Value: 0.8660254
   m_Ortho:
