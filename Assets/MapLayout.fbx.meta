@@ -3,7 +3,27 @@ guid: 294e6661c493f114087728d240871af3
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Office Ceiling Lights
+    second: {fileID: 2100000, guid: 1eab881d359a7a044828a7f074d792a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Old varnished wooden floor
+    second: {fileID: 2100000, guid: 984b919e3887feb4aa9e0a5796328524, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tiles Basic White
+    second: {fileID: 2100000, guid: e3c97d7b81645db48b59f8a79a777041, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Venetian Plaster Wall
+    second: {fileID: 2100000, guid: 9a29184fdc1ff0544b04dcba138a723a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
