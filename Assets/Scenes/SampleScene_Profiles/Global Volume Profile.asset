@@ -28,53 +28,6 @@ MonoBehaviour:
   kernelSize:
     overrideState: 1
     value: 1
---- !u!114 &-4388767645698344436
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
-  m_Name: Bloom
-  m_EditorClassIdentifier: Unity.Postprocessing.Runtime::UnityEngine.Rendering.PostProcessing.Bloom
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  intensity:
-    overrideState: 1
-    value: 10.98
-  threshold:
-    overrideState: 1
-    value: 0.78
-  softKnee:
-    overrideState: 1
-    value: 0.5
-  clamp:
-    overrideState: 1
-    value: 65472
-  diffusion:
-    overrideState: 1
-    value: 7
-  anamorphicRatio:
-    overrideState: 1
-    value: 0
-  color:
-    overrideState: 1
-    value: {r: 1, g: 1, b: 1, a: 1}
-  fastMode:
-    overrideState: 1
-    value: 0
-  dirtTexture:
-    overrideState: 0
-    value: {fileID: 0}
-    defaultState: 1
-  dirtIntensity:
-    overrideState: 0
-    value: 0
 --- !u!114 &-1574979330198891858
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -137,8 +90,6 @@ MonoBehaviour:
   - {fileID: -1574979330198891858}
   - {fileID: 7917696804288758454}
   - {fileID: -6128214476395343104}
-  - {fileID: 5555921395987654196}
-  - {fileID: -4388767645698344436}
 --- !u!114 &4424941323139507438
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -184,8 +135,8 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   gradingMode:
-    overrideState: 1
-    value: 1
+    overrideState: 0
+    value: 0
   externalLut:
     overrideState: 0
     value: {fileID: 0}
@@ -271,13 +222,13 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: -0.49010366}
+    value: {x: 1, y: 1, z: 1, w: -0.4241282}
   gamma:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: 0.68803036}
+    value: {x: 1, y: 1, z: 1, w: 0.0094252145}
   gain:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: -0.084825665}
+    value: {x: 1, y: 1, z: 1, w: 0.16022624}
   masterCurve:
     overrideState: 0
     value:
@@ -1478,32 +1429,6 @@ MonoBehaviour:
       - 0.5
       - 0.5
       - 0.5
---- !u!114 &5555921395987654196
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
-  m_Name: ChromaticAberration
-  m_EditorClassIdentifier: Unity.Postprocessing.Runtime::UnityEngine.Rendering.PostProcessing.ChromaticAberration
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  spectralLut:
-    overrideState: 1
-    value: {fileID: 0}
-    defaultState: 1
-  intensity:
-    overrideState: 1
-    value: 0.529
-  fastMode:
-    overrideState: 1
-    value: 0
 --- !u!114 &7917696804288758454
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1525,7 +1450,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.84
+    value: 0
   color:
     overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
@@ -1543,7 +1468,7 @@ MonoBehaviour:
     value: -12
   thicknessModifier:
     overrideState: 1
-    value: 1.22
+    value: 1.4
   zBias:
     overrideState: 1
     value: 0.001
