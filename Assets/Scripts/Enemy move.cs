@@ -19,6 +19,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] private float chaseTimeAfterLost = 1.2f;
     [SerializeField] private float investigateSearchDuration = 4f;
     [SerializeField] private float searchRadius = 3f;
+    [SerializeField] private bool requireContinuousSightForChase = false; // if true, stop chasing immediately when out of sight
 
     [Header("Animator (optional)")]
     [SerializeField] private Animator animator;
@@ -54,7 +55,8 @@ public class EnemyMove : MonoBehaviour
         agent.angularSpeed = 120f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 1.2f;
-        agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+        // set avoidance priority (0..99) instead of ObstacleAvoidanceType for compatibility
+        agent.avoidancePriority = 50;
 
         // ensure agent starts on the NavMesh to avoid being stuck off-mesh
         SnapToNavMesh();
@@ -63,6 +65,16 @@ public class EnemyMove : MonoBehaviour
             SafeSetDestination(waypoints[0].position);
         else
             SafeSetDestination(transform.position);
+    }
+
+    void OnEnable()
+    {
+        NoiseManager.OnNoiseEmitted += HandleNoise;
+    }
+
+    void OnDisable()
+    {
+        NoiseManager.OnNoiseEmitted -= HandleNoise;
     }
 
     void Update()
@@ -112,15 +124,25 @@ public class EnemyMove : MonoBehaviour
         switch (state)
         {
             case State.Chase:
-            if (player != null)
-                SafeSetDestination(player.position);
-
-                if (Time.time - lastSeenTime > chaseTimeAfterLost)
+                // if we require continuous sight for chase, drop to investigate immediately when out of sight
+                if (requireContinuousSightForChase && !canSee)
                 {
-                    // lost sight: go investigate last known position
                     state = State.Investigate;
                     agent.speed = patrolSpeed;
                     SafeSetDestination(lastSeenPosition);
+                }
+                else
+                {
+                    if (player != null)
+                        SafeSetDestination(player.position);
+
+                    // if we haven't seen the player for some time, return to patrol (only when not requiring continuous sight)
+                    if (!requireContinuousSightForChase && Time.time - lastSeenTime > chaseTimeAfterLost)
+                    {
+                        state = State.Investigate;
+                        agent.speed = patrolSpeed;
+                        SafeSetDestination(lastSeenPosition);
+                    }
                 }
                 break;
 
@@ -200,8 +222,10 @@ public class EnemyMove : MonoBehaviour
         float sampleDistance = 2f;
         if (NavMesh.SamplePosition(transform.position, out hit, sampleDistance, NavMesh.AllAreas))
         {
-            // warp keeps the agent internal state consistent
-            agent.Warp(hit.position);
+            // warp keeps the agent internal state consistent; include baseOffset so visuals align
+            Vector3 warpPos = hit.position + Vector3.up * agent.baseOffset;
+            agent.Warp(warpPos);
+            Debug.LogFormat(this, "EnemyMove: Warped '{0}' to NavMesh at {1} (baseOffset {2})", name, warpPos, agent.baseOffset);
         }
         else
         {
@@ -241,6 +265,47 @@ public class EnemyMove : MonoBehaviour
                 Debug.LogWarningFormat(this, "EnemyMove: Could not find NavMesh position near target {0} for '{1}'", target, name);
             }
         }
+    }
+
+    // React to noises emitted in the world
+    private void HandleNoise(Vector3 noisePos, float strength, GameObject source)
+    {
+        if (source == this.gameObject) return; // ignore self
+
+        float dist = Vector3.Distance(transform.position, noisePos);
+        if (dist > strength) return; // out of hearing range
+
+        // partial occlusion: attenuate strength for each blocking collider between source and enemy
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        Vector3 dir = noisePos - origin;
+        float effectiveStrength = strength;
+
+        RaycastHit[] hits = Physics.RaycastAll(origin, dir.normalized, dir.magnitude, ~0, QueryTriggerInteraction.Ignore);
+        int blockerCount = 0;
+        foreach (var h in hits)
+        {
+            // ignore hits on the source, player or self
+            if (h.transform == source || h.transform == player || h.transform == transform) continue;
+            if (h.transform.IsChildOf(source?.transform) || h.transform.IsChildOf(player)) continue;
+            // count as a blocker
+            blockerCount++;
+        }
+
+        if (blockerCount > 0)
+        {
+            // attenuate exponentially: each blocker halves the audible strength
+            effectiveStrength *= Mathf.Pow(0.5f, blockerCount);
+        }
+
+        if (dist > effectiveStrength) return; // after attenuation, out of hearing range
+
+        // heard it: investigate (do not immediately switch to Chase on hearing)
+        lastSeenPosition = noisePos;
+        // record the time but do not treat this as visual sighting
+        lastSeenTime = Time.time;
+        state = State.Investigate;
+        agent.speed = patrolSpeed;
+        SafeSetDestination(noisePos);
     }
 
     void OnDrawGizmosSelected()

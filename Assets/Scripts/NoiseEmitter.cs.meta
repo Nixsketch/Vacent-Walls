@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 3d978759e25fbdf47b690c3969f2bb90
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sfxClip: {fileID: 8300000, guid: cf14ebff4cfc3d245a79387ced251832, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

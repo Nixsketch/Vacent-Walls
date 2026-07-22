@@ -16,17 +16,28 @@ public class PlayerMovement : MonoBehaviour
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
 
+    [Header("Noise")]
+    [SerializeField] private NoiseEmitter noiseEmitter;
+    [SerializeField] private float stepIntervalWalk = 0.5f;
+    [SerializeField] private float stepIntervalRun = 0.35f;
+    [SerializeField] private float runNoiseMultiplier = 1.8f;
+    [SerializeField] private float jumpNoiseMultiplier = 1.2f;
+
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
 
     private bool canMove = true;
+    private float lastStepTime = -10f;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (noiseEmitter == null)
+            noiseEmitter = GetComponent<NoiseEmitter>() ?? gameObject.AddComponent<NoiseEmitter>();
     }
 
     void Update()
