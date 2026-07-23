@@ -4,10 +4,14 @@ using UnityEngine;
 public class NoiseEmitter : MonoBehaviour
 {
     [Header("Noise")]
-    public float baseStrength = 3f;
+    [Tooltip("Default noise range/strength for emitted sounds. Walk = baseStrength × 1, Run = baseStrength × runNoiseMultiplier")]
+    public float baseStrength = 8f;
 
     [Header("SFX")]
+    // Single clip fallback (kept for backwards compatibility)
     public AudioClip sfxClip;
+    // Multiple clips (e.g., footstep variants). If non-empty, a random clip will be chosen.
+    public AudioClip[] sfxClips;
     [Range(0f,1f)] public float sfxVolume = 1f;
 
     private AudioSource audioSource;
@@ -26,9 +30,21 @@ public class NoiseEmitter : MonoBehaviour
     {
         float strength = baseStrength * strengthMultiplier;
         NoiseManager.EmitNoise(transform.position, strength, gameObject);
-        if (playSfx && sfxClip != null && audioSource != null)
+        if (playSfx && audioSource != null)
         {
-            audioSource.PlayOneShot(sfxClip, sfxVolume);
+            AudioClip clipToPlay = null;
+            if (sfxClips != null && sfxClips.Length > 0)
+            {
+                int idx = UnityEngine.Random.Range(0, sfxClips.Length);
+                clipToPlay = sfxClips[idx];
+            }
+            else
+            {
+                clipToPlay = sfxClip;
+            }
+
+            if (clipToPlay != null)
+                audioSource.PlayOneShot(clipToPlay, sfxVolume);
         }
     }
 
@@ -37,9 +53,21 @@ public class NoiseEmitter : MonoBehaviour
     {
         float strength = baseStrength * strengthMultiplier;
         NoiseManager.EmitNoise(position, strength, gameObject);
-        if (playSfx && sfxClip != null && audioSource != null)
+        if (playSfx)
         {
-            AudioSource.PlayClipAtPoint(sfxClip, position, sfxVolume);
+            AudioClip clipToPlay = null;
+            if (sfxClips != null && sfxClips.Length > 0)
+            {
+                int idx = UnityEngine.Random.Range(0, sfxClips.Length);
+                clipToPlay = sfxClips[idx];
+            }
+            else
+            {
+                clipToPlay = sfxClip;
+            }
+
+            if (clipToPlay != null)
+                AudioSource.PlayClipAtPoint(clipToPlay, position, sfxVolume);
         }
     }
 }

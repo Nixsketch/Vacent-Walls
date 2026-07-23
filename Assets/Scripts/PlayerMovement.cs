@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.R) && canMove)
+        if (Input.GetKey(KeyCode.LeftControl) && canMove)
         {
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
@@ -80,6 +80,22 @@ public class PlayerMovement : MonoBehaviour
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
+
+        // Emit footstep noise while moving on the ground
+        if (noiseEmitter != null && characterController.isGrounded)
+        {
+            bool isMoving = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f;
+            if (isMoving)
+            {
+                float interval = isRunning ? stepIntervalRun : stepIntervalWalk;
+                if (Time.time - lastStepTime >= interval)
+                {
+                    float multiplier = isRunning ? runNoiseMultiplier : 1f;
+                    noiseEmitter.EmitNoise(multiplier, true);
+                    lastStepTime = Time.time;
+                }
+            }
+        }
 
         if (canMove)
         {

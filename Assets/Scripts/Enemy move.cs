@@ -8,12 +8,19 @@ public class EnemyMove : MonoBehaviour
 
     [Header("Speeds")]
     [SerializeField] private float patrolSpeed = 3.5f;
-    [SerializeField] private float chaseSpeed = 5.5f;
+    [SerializeField] private float chaseSpeed = 15.5f;
 
     [Header("Detection")]
     [SerializeField] private float detectionRange = 12f;
     [SerializeField] [Range(0f, 180f)] private float fieldOfView = 120f;
     [SerializeField] private float eyeHeight = 1.6f;
+    [Header("Hearing / Vision")]
+    [Tooltip("When true the enemy will use vision as well as hearing. When false the enemy will ignore sight and only detect via noise.")]
+    public bool visionEnabled = true;
+    [Tooltip("If a single noise has effective strength >= this value the enemy will immediately enter Chase state.")]
+    public float chaseOnNoiseThreshold = 1.0f;
+    [Tooltip("Log state changes for debugging")]
+    public bool logStateChanges = false;
 
     [Header("Chase / Search")]
     [SerializeField] private float chaseTimeAfterLost = 1.2f;
@@ -36,6 +43,11 @@ public class EnemyMove : MonoBehaviour
 
     private enum State { Patrol, Chase, Investigate, Search }
     private State state = State.Patrol;
+
+    // Expose simple state info for other components (e.g., Music/Audio reporters)
+    public bool IsChasing { get { return state == State.Chase; } }
+    public bool IsInvestigating { get { return state == State.Investigate || state == State.Search; } }
+    public Vector3 LastKnownPosition { get { return lastSeenPosition; } }
 
     void Start()
     {
@@ -80,7 +92,7 @@ public class EnemyMove : MonoBehaviour
     void Update()
     {
         bool canSee = false;
-        if (player != null)
+        if (visionEnabled && player != null)
         {
             Vector3 toPlayer = player.position - transform.position;
             float sqrDist = toPlayer.sqrMagnitude;
@@ -117,6 +129,7 @@ public class EnemyMove : MonoBehaviour
             if (state != State.Chase)
             {
                 state = State.Chase;
+                if (logStateChanges) Debug.LogFormat(this, "{0}: Entered Chase (via sight)", name);
                 agent.speed = chaseSpeed;
             }
         }
@@ -128,6 +141,7 @@ public class EnemyMove : MonoBehaviour
                 if (requireContinuousSightForChase && !canSee)
                 {
                     state = State.Investigate;
+                    if (logStateChanges) Debug.LogFormat(this, "{0}: Dropped to Investigate (lost sight, requireContinuousSightForChase=true)", name);
                     agent.speed = patrolSpeed;
                     SafeSetDestination(lastSeenPosition);
                 }
@@ -140,6 +154,7 @@ public class EnemyMove : MonoBehaviour
                     if (!requireContinuousSightForChase && Time.time - lastSeenTime > chaseTimeAfterLost)
                     {
                         state = State.Investigate;
+                        if (logStateChanges) Debug.LogFormat(this, "{0}: Dropped to Investigate (lost trail after {1}s)", name, chaseTimeAfterLost);
                         agent.speed = patrolSpeed;
                         SafeSetDestination(lastSeenPosition);
                     }
@@ -299,12 +314,30 @@ public class EnemyMove : MonoBehaviour
 
         if (dist > effectiveStrength) return; // after attenuation, out of hearing range
 
-        // heard it: investigate (do not immediately switch to Chase on hearing)
+        // heard it: decide whether to investigate or immediately chase based on strength
         lastSeenPosition = noisePos;
-        // record the time but do not treat this as visual sighting
         lastSeenTime = Time.time;
-        state = State.Investigate;
-        agent.speed = patrolSpeed;
+
+        if (effectiveStrength >= chaseOnNoiseThreshold)
+        {
+            // start chasing toward the source (if it's the player, chase player's position)
+            Vector3 chaseTarget = noisePos;
+            if (source != null && player != null && (source == player.gameObject || source.transform.IsChildOf(player)))
+                chaseTarget = player.position;
+
+            state = State.Chase;
+            if (logStateChanges) Debug.LogFormat(this, "{0}: Entered Chase (via loud noise, strength={1:F2} >= threshold {2:F2})", name, effectiveStrength, chaseOnNoiseThreshold);
+            agent.speed = chaseSpeed;
+            SafeSetDestination(chaseTarget);
+        }
+        else
+        {
+            // otherwise investigate the noise
+            state = State.Investigate;
+            if (logStateChanges) Debug.LogFormat(this, "{0}: Entered Investigate (faint noise, strength={1:F2} < threshold {2:F2})", name, effectiveStrength, chaseOnNoiseThreshold);
+            agent.speed = patrolSpeed;
+            SafeSetDestination(lastSeenPosition);
+        }
         SafeSetDestination(noisePos);
     }
 
