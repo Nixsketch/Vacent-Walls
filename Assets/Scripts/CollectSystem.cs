@@ -4,7 +4,11 @@ using TMPro;
 public class CollectSystem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI collectCountText;
+    [SerializeField] private AudioClip collectSound;
+    [SerializeField] private float soundVolume = 1f;
+
     private int collectCount = 0;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -17,13 +21,32 @@ public class CollectSystem : MonoBehaviour
         {
             UpdateCountDisplay();
         }
+
+        // Setup audio source if sound is assigned
+        if (collectSound != null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
     }
 
     public void CollectItem()
     {
         collectCount++;
         UpdateCountDisplay();
+        PlayCollectSound();
         Debug.Log($"Item collected! Total: {collectCount}");
+    }
+
+    private void PlayCollectSound()
+    {
+        if (collectSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(collectSound, soundVolume);
+        }
     }
 
     private void UpdateCountDisplay()
