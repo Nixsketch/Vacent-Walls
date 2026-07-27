@@ -6843,5 +6843,6 @@
 /Opened[[:space:]]Walls/Library/Artifacts/fb/fbe3a394cb6984a40eed6f0a5c666323 filter=lfs diff=lfs merge=lfs -text
 /Opened[[:space:]]Walls/Library/Bee/CachedNodeOutput/3644159d339718ee9a16e69223678d8a_out filter=lfs diff=lfs merge=lfs -text
 /Opened[[:space:]]Walls/Library/Bee/CachedNodeOutput/607198601d4d4d0e0b12714a95341bb4_out filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
 packages/manifest.json !text !filter !merge !diff
 *.json !text !filter !merge !diff
