@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private VideoClip jumpscareVideo;
     [SerializeField] private float deathDelay = 0.5f;
+    [SerializeField] private GameObject PauseScreenPanel;
+    [SerializeField] private GameObject AudioSettingsPanel;
+    [SerializeField] private GameObject PlayerMovement;
+    [SerializeField] private AudioMixer audioMixer; // Reference to the AudioMixer for volume control
 
     private void Awake()
     {
@@ -35,6 +40,16 @@ public class GameManager : MonoBehaviour
             jumpscareVideoPanel.SetActive(false);
         }
 
+        if (AudioSettingsPanel != null )
+        {
+            AudioSettingsPanel.SetActive(false);
+        }
+        if (PauseScreenPanel != null)
+        {
+            PauseScreenPanel.SetActive(false);
+
+        }
+
         // Setup video player to call ShowDeathScreen when video ends
         if (videoPlayer != null)
         {
@@ -42,6 +57,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [System.Obsolete]
+    private void Update()
+    {
+        // Toggle pause screen with Escape key
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (PauseScreenPanel != null)
+            {
+                bool isActive = PauseScreenPanel.activeSelf;
+                PauseScreenPanel.SetActive(!isActive);
+                Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
+                Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
+                Cursor.visible = !isActive;
+                audioMixer.SetFloat("MasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
+                PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    playerMovement.enabled = isActive; // Enable or disable player movement
+                }
+            }
+
+        }
+    }
     public void PlayerDied()
     {
         // Hide the player
@@ -97,11 +135,68 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
     }
-
     public void RespawnGame()
     {
         Time.timeScale = 1f; // Ensure time is running
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void OpenAudioSettings()
+    {
+        if (AudioSettingsPanel != null)
+        {
+            AudioSettingsPanel.SetActive(true);
+        }
+    }
+    public void CloseAudioSettings()
+    {
+        if (AudioSettingsPanel != null)
+        {
+            AudioSettingsPanel.SetActive(false);
+        }
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        audioMixer.SetFloat("MasterVolume", volume);
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        audioMixer.SetFloat("MusicVolume", volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        audioMixer.SetFloat("SFXVolume", volume);
+    }
+
+    public void ResumeGame()
+    {
+        if (PauseScreenPanel != null)
+        {
+            PauseScreenPanel.SetActive(false);
+            Time.timeScale = 1f; // Resume the game
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            audioMixer.SetFloat("MasterVolume", 0f); // Unmute audio
+            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.enabled = true; // Enable player movement
+            }
+        }
+    }
+
+    public void ReturntoMainMenu()
+    {
+        Time.timeScale = 1f; // Ensure time is running
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the editor
     }
 
     private void OnDestroy()
