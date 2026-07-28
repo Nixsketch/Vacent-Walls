@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float stepIntervalWalk = 0.5f;
     [SerializeField] private float stepIntervalRun = 0.35f;
     [SerializeField] private float runNoiseMultiplier = 1.8f;
-    [SerializeField] private float jumpNoiseMultiplier = 1.2f;
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;

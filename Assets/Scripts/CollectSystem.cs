@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Audio;
 
 public class CollectSystem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI collectCountText;
     [SerializeField] private AudioClip collectSound;
     [SerializeField] private float soundVolume = 1f;
+    [SerializeField] private AudioMixer audioMixer;
 
     private int collectCount = 0;
     private AudioSource audioSource;
@@ -29,6 +31,7 @@ public class CollectSystem : MonoBehaviour
             if (audioSource == null)
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SoundFX")[0];
             }
         }
     }

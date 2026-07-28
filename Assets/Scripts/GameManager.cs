@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,11 +14,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject jumpscareVideoPanel;
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private VideoClip jumpscareVideo;
-    [SerializeField] private float deathDelay = 0.5f;
+    [SerializeField] private Slider masterVolumeSlider;
+    [SerializeField] private Slider musicvolumeSlider;
+    [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private GameObject PauseScreenPanel;
     [SerializeField] private GameObject AudioSettingsPanel;
     [SerializeField] private GameObject PlayerMovement;
-    [SerializeField] private AudioMixer audioMixer; // Reference to the AudioMixer for volume control
+    [SerializeField] private AudioMixer audioMixer; // Reference to the AudioMixer for volume control 
 
     private void Awake()
     {
@@ -70,7 +74,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
                 Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
                 Cursor.visible = !isActive;
-                audioMixer.SetFloat("MasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
+                audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
                 PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
                 if (playerMovement != null)
                 {
@@ -155,19 +159,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetMasterVolume(float volume)
+    public void SetMasterVolume()
     {
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MasterVolume", masterVolumeSlider.value);
     }
 
-    public void SetMusicVolume(float volume)
+    public void SetMusicVolume()
     {
-        audioMixer.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("MusicVolume", musicvolumeSlider.value);
     }
 
-    public void SetSFXVolume(float volume)
+    public void SetSFXVolume()
     {
-        audioMixer.SetFloat("SFXVolume", volume);
+        audioMixer.SetFloat("SFXVolume", sfxVolumeSlider.value);
     }
 
     public void ResumeGame()
@@ -190,7 +194,7 @@ public class GameManager : MonoBehaviour
     public void ReturntoMainMenu()
     {
         Time.timeScale = 1f; // Ensure time is running
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Menu");
     }
 
     public void QuitGame()
