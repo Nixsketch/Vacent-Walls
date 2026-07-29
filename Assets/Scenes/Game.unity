@@ -8812,6 +8812,10 @@ PrefabInstance:
       propertyPath: spreadCustomCurve.m_Curve.Array.data[0].value
       value: 0.87777776
       objectReference: {fileID: 0}
+    - target: {fileID: 4847971364421359415, guid: 25eb0909cc8af15499d706d0ffa1165d, type: 3}
+      propertyPath: staminaBarFill
+      value: 
+      objectReference: {fileID: 408869624}
     - target: {fileID: 5335813946740626971, guid: 25eb0909cc8af15499d706d0ffa1165d, type: 3}
       propertyPath: sfxVolume
       value: 1

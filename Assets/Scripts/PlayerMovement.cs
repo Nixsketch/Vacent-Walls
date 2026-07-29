@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(StaminaSystem))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Camera & Look Settings")]
     public Camera playerCamera;
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
-    public float gravity = 10f;
     public float lookSpeed = 2f;
     public float lookXLimit = 45f;
+
+    [Header("Movement Settings")]
+    public float walkSpeed = 6f;
+    public float runSpeed = 12f;
+    public float crouchSpeed = 3f;
+    public float gravity = 19.62f; // Keep positive here; we subtract it cleanly below
+
+    [Header("Crouch Settings")]
     public float defaultHeight = 2f;
     public float crouchHeight = 1f;
-    public float crouchSpeed = 3f;
 
     [Header("Noise")]
     [SerializeField] private NoiseEmitter noiseEmitter;
@@ -24,13 +30,23 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
+    private StaminaSystem staminaSystem;
 
     private bool canMove = true;
     private float lastStepTime = -10f;
 
+    // Store original speeds so crouching doesn't permanently overwrite them
+    private float baseWalkSpeed;
+    private float baseRunSpeed;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        staminaSystem = GetComponent<StaminaSystem>();
+
+        baseWalkSpeed = walkSpeed;
+        baseRunSpeed = runSpeed;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -40,60 +56,78 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // 1. Calculate direction vectors
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        // 2. Movement Input
+        float moveX = canMove ? Input.GetAxis("Horizontal") : 0;
+        float moveZ = canMove ? Input.GetAxis("Vertical") : 0;
+        bool isMoving = (Mathf.Abs(moveX) > 0.1f || Mathf.Abs(moveZ) > 0.1f);
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        // 3. Stamina & Sprinting Check
+        bool wantsToRun = Input.GetKey(KeyCode.LeftShift) && isMoving;
+        bool isRunning = false;
+
+        if (wantsToRun)
         {
+            isRunning = staminaSystem.TrySprint(Time.deltaTime);
         }
         else
         {
-            moveDirection.y = movementDirectionY;
+            staminaSystem.RegenerateStamina(Time.deltaTime);
         }
 
-        if (!characterController.isGrounded)
+        // 4. Calculate Horizontal Velocity
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+        Vector3 horizontalMove = (forward * moveZ + right * moveX) * currentSpeed;
+
+        // 5. Gravity & Grounding Fix
+        if (characterController.isGrounded)
         {
+            // Reset downward force so gravity doesn't build up endlessly
+            moveDirection.y = -2f;
+        }
+        else
+        {
+            // Apply gravity steadily when airborne
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
+        // Combine horizontal movement with vertical gravity
+        moveDirection.x = horizontalMove.x;
+        moveDirection.z = horizontalMove.z;
+
+        // 6. Crouch Handling
         if (Input.GetKey(KeyCode.LeftControl) && canMove)
         {
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
-
         }
         else
         {
             characterController.height = defaultHeight;
-            walkSpeed = 6f;
-            runSpeed = 12f;
+            walkSpeed = baseWalkSpeed;
+            runSpeed = baseRunSpeed;
         }
 
+        // 7. Execute Movement
         characterController.Move(moveDirection * Time.deltaTime);
 
-        // Emit footstep noise while moving on the ground
-        if (noiseEmitter != null && characterController.isGrounded)
+        // 8. Footstep & Noise Emission
+        if (noiseEmitter != null && characterController.isGrounded && isMoving)
         {
-            bool isMoving = Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f;
-            if (isMoving)
+            float interval = isRunning ? stepIntervalRun : stepIntervalWalk;
+            if (Time.time - lastStepTime >= interval)
             {
-                float interval = isRunning ? stepIntervalRun : stepIntervalWalk;
-                if (Time.time - lastStepTime >= interval)
-                {
-                    float multiplier = isRunning ? runNoiseMultiplier : 1f;
-                    noiseEmitter.EmitNoise(multiplier, true);
-                    lastStepTime = Time.time;
-                }
+                float multiplier = isRunning ? runNoiseMultiplier : 1f;
+                noiseEmitter.EmitNoise(multiplier, true);
+                lastStepTime = Time.time;
             }
         }
 
+        // 9. Camera & Player Rotation
         if (canMove)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
