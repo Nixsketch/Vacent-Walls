@@ -12,86 +12,48 @@ public class ProximityAtmosphereController : MonoBehaviour
     public float minValue = -80f;          // e.g., dB or parameter low
     public float maxValue = 0f;            // e.g., dB or parameter high
     public float smoothTime = 0.1f;
+
     [Header("Debug")]
     public bool logDebug = false;
+    private float currentValue;
+    private float valueVelocity;
+    public AudioSource targetAudioSource;
 
-    float currentValue;
-    float valueVelocity;
 
     void Start()
     {
-            AudioSource src = GetComponent<AudioSource>();
+        if (targetAudioSource == null)
+        {
+            targetAudioSource = GetComponent<AudioSource>();
+        }
 
-            if (src.clip == null) Debug.LogError("AudioSource: No Clip assigned!");
-            if (src.pitch == 0) Debug.LogError("AudioSource: Pitch is 0!");
-            if (!src.enabled) Debug.LogError("AudioSource: Component is disabled!");
-            if (!gameObject.activeInHierarchy) Debug.LogError("AudioSource: GameObject is inactive!");
-
-            // Check for Listener
-            if (FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length == 0)
+        if (targetAudioSource != null)
+        {
+            // 2. MUTE THE MIXER FIRST before triggering playback!
+            currentValue = minValue; // -80f
+            if (mixer != null)
             {
-                Debug.LogError("AudioSource: No AudioListener in scene!");
+                mixer.SetFloat(parameterName, minValue);
             }
 
-            src.Play();
-        if (player == null)
-        {
-            if (Camera.main != null) player = Camera.main.transform;
-            else
+            // 3. Now start the loop silently
+            targetAudioSource.loop = true;
+            if (!targetAudioSource.isPlaying)
             {
-                if (logDebug) Debug.LogWarning("ProximityAtmosphereController: player not assigned and Camera.main is null");
+                targetAudioSource.Play();
             }
         }
-        if (enemy == null)
-        {
-            if (logDebug) Debug.LogWarning("ProximityAtmosphereController: enemy not assigned");
-        }
-        if (mixer == null)
-        {
-            if (logDebug) Debug.LogWarning("ProximityAtmosphereController: mixer not assigned");
-        }
-        if ("Atmos" == parameterName && mixer != null)
-        {
-            // Check if the parameter exists in the mixer
-            float testValue;
-            bool ok = mixer.GetFloat(parameterName, out testValue);
-            if (!ok && logDebug)
-            {
-                Debug.LogWarning($"ProximityAtmosphereController: AudioMixer parameter '{parameterName}' not found on mixer '{mixer.name}'.");
-            }
-
-            if ("Atmos" == parameterName && minValue == -80f && logDebug)
-            {
-                Debug.LogWarning("ProximityAtmosphereController: parameterName is set to default 'Atmos' and minValue is -80. This may result in silence when close to the enemy.");
-            }
-        }
-    }
-
-    private void Awake()
-    {
-        void Start() {
-    AudioSource src = GetComponent<AudioSource>();
-    
-    if (src.clip == null) Debug.LogError("AudioSource: No Clip assigned!");
-    if (src.pitch == 0) Debug.LogError("AudioSource: Pitch is 0!");
-    if (!src.enabled) Debug.LogError("AudioSource: Component is disabled!");
-    if (!gameObject.activeInHierarchy) Debug.LogError("AudioSource: GameObject is inactive!");
-    
-    // Check for Listener
-    if (FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length == 0) {
-        Debug.LogError("AudioSource: No AudioListener in scene!");
-    }
-
-    src.Play();
-}   
     }
 
     void Update()
     {
-        // try to fall back to main camera as player if not set
+        // Try to fall back to main camera as player if not set
         if (player == null)
         {
-            if (Camera.main != null) player = Camera.main.transform;
+            if (Camera.main != null)
+            {
+                player = Camera.main.transform;
+            }
             else
             {
                 if (logDebug) Debug.LogWarning("ProximityAtmosphereController: player not assigned and Camera.main is null");
@@ -99,29 +61,30 @@ public class ProximityAtmosphereController : MonoBehaviour
             }
         }
 
-        if (enemy == null || mixer == null) {
+        if (enemy == null || mixer == null)
+        {
             if (logDebug) Debug.LogWarning("ProximityAtmosphereController: enemy or mixer not assigned");
             return;
         }
 
+        // Distance & Volume calculation
         float dist = Vector3.Distance(player.position, enemy.position);
-        float t = Mathf.InverseLerp(minDistance, maxDistance, dist); // 0 when very close, 1 when far
-        float target = Mathf.Lerp(maxValue, minValue, t); // closer => higher (maxValue)
-        currentValue = Mathf.SmoothDamp(currentValue, target, ref valueVelocity, smoothTime);
+        float t = Mathf.InverseLerp(minDistance, maxDistance, dist); // 0 when close, 1 when far
+        float target = Mathf.Lerp(maxValue, minValue, t);            // close = maxValue (0dB), far = minValue (-80dB)
 
-        // clamp in case of numerical issues
+        currentValue = Mathf.SmoothDamp(currentValue, target, ref valueVelocity, smoothTime);
         currentValue = Mathf.Clamp(currentValue, Mathf.Min(minValue, maxValue), Mathf.Max(minValue, maxValue));
 
         bool ok = mixer.SetFloat(parameterName, currentValue);
         if (!ok && logDebug)
         {
-            Debug.LogWarning($"ProximityAtmosphereController: AudioMixer.SetFloat failed — parameter '{parameterName}' not found on mixer '{(mixer != null ? mixer.name : "null")}'.");
+            Debug.LogWarning($"ProximityAtmosphereController: AudioMixer.SetFloat failed — parameter '{parameterName}' not found on mixer '{mixer.name}'.");
         }
 
         // Detect if another manager might be overwriting the same parameter
         if (logDebug)
         {
-            var mm = FindObjectOfType<MusicManager>();
+            var mm = FindFirstObjectByType<MusicManager>();
             if (mm != null && mm.stemParameterNames != null)
             {
                 for (int i = 0; i < mm.stemParameterNames.Length; i++)

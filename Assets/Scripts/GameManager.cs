@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private VideoClip jumpscareVideo;
     [SerializeField] private Slider masterVolumeSlider;
-    [SerializeField] private Slider musicvolumeSlider;
+    [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private GameObject PauseScreenPanel;
     [SerializeField] private GameObject AudioSettingsPanel;
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
                 Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
                 Cursor.visible = !isActive;
-                audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
+                audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -20f); // Mute or unmute audio
                 PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
                 if (playerMovement != null)
                 {
@@ -161,34 +161,20 @@ public class GameManager : MonoBehaviour
 
     public void SetMasterVolume()
     {
-        audioMixer.SetFloat("MasterVolume", masterVolumeSlider.value);
+        float value = Mathf.Max(masterVolumeSlider.value, 0.0001f);
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20f);
     }
 
     public void SetMusicVolume()
     {
-        audioMixer.SetFloat("MusicVolume", musicvolumeSlider.value);
+        float value = Mathf.Max(musicVolumeSlider.value, 0.0001f);
+        audioMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20f);
     }
 
     public void SetSFXVolume()
     {
-        audioMixer.SetFloat("SFXVolume", sfxVolumeSlider.value);
-    }
-
-    public void ResumeGame()
-    {
-        if (PauseScreenPanel != null)
-        {
-            PauseScreenPanel.SetActive(false);
-            Time.timeScale = 1f; // Resume the game
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            audioMixer.SetFloat("MasterVolume", 0f); // Unmute audio
-            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
-            if (playerMovement != null)
-            {
-                playerMovement.enabled = true; // Enable player movement
-            }
-        }
+        float value = Mathf.Max(sfxVolumeSlider.value, 0.0001f);
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20f);
     }
 
     public void ReturntoMainMenu()
