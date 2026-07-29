@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6443842366182400113}
   - component: {fileID: 3520825113967736700}
   - component: {fileID: 5335813946740626971}
-  - component: {fileID: 8132924235797480240}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -89,7 +88,6 @@ MonoBehaviour:
   stepIntervalWalk: 0.5
   stepIntervalRun: 0.35
   runNoiseMultiplier: 1.8
-  jumpNoiseMultiplier: 1.2
 --- !u!82 &3520825113967736700
 AudioSource:
   m_ObjectHideFlags: 0
@@ -207,19 +205,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2b8e49119116986488a5cdbb4fb6cdba, type: 3}
   - {fileID: 8300000, guid: 89b4eb386700c7347ba78eb663811c3e, type: 3}
   sfxVolume: 1
---- !u!114 &8132924235797480240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931379697855544486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 398dcc847b3c297449e6ff9b70e4c4d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  isDead: 0
 --- !u!1 &3821777410717649658
 GameObject:
   m_ObjectHideFlags: 0
