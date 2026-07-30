@@ -12,7 +12,7 @@ public class EnemyMove : MonoBehaviour
 
     [Header("Detection")]
     [SerializeField] private float detectionRange = 12f;
-    [SerializeField] [Range(0f, 180f)] private float fieldOfView = 120f;
+    [SerializeField][Range(0f, 180f)] private float fieldOfView = 120f;
     [SerializeField] private float eyeHeight = 1.6f;
     [Header("Hearing / Vision")]
     [Tooltip("When true the enemy will use vision as well as hearing. When false the enemy will ignore sight and only detect via noise.")]

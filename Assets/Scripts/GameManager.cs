@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Video;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Rendering;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,7 +43,7 @@ public class GameManager : MonoBehaviour
             jumpscareVideoPanel.SetActive(false);
         }
 
-        if (AudioSettingsPanel != null )
+        if (AudioSettingsPanel != null)
         {
             AudioSettingsPanel.SetActive(false);
         }

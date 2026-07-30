@@ -12,7 +12,7 @@ public class NoiseEmitter : MonoBehaviour
     public AudioClip sfxClip;
     // Multiple clips (e.g., footstep variants). If non-empty, a random clip will be chosen.
     public AudioClip[] sfxClips;
-    [Range(0f,1f)] public float sfxVolume = 1f;
+    [Range(0f, 1f)] public float sfxVolume = 1f;
 
     private AudioSource audioSource;
 

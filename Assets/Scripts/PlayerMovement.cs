@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -69,13 +67,22 @@ public class PlayerMovement : MonoBehaviour
         bool wantsToRun = Input.GetKey(KeyCode.LeftShift) && isMoving;
         bool isRunning = false;
 
+        // Get current stamina BEFORE modification for accurate UI state
+        float currentStam = staminaSystem.GetCurrentStamina();
+
         if (wantsToRun)
         {
             isRunning = staminaSystem.TrySprint(Time.deltaTime);
+            // Pass the NEW stamina value after draining
+            staminaSystem.staminaBarManager.SetSprinting(true, staminaSystem.GetCurrentStamina());
         }
         else
         {
             staminaSystem.RegenerateStamina(Time.deltaTime);
+            // Pass the NEW stamina value after regenerating
+            // Crucial: Pass 'false' for sprinting, but the bar will stay visible 
+            // because the script now checks if stamina is NOT full.
+            staminaSystem.staminaBarManager.SetSprinting(false, staminaSystem.GetCurrentStamina());
         }
 
         // 4. Calculate Horizontal Velocity

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StaminaSystem : MonoBehaviour
 {
@@ -9,15 +10,24 @@ public class StaminaSystem : MonoBehaviour
     [SerializeField] private float regenDelay = 1.2f;
 
     [Header("UI Elements")]
-    [SerializeField] private UnityEngine.UI.Image staminaBarFill;
+    [SerializeField] private Image staminaBarFill;
+    [SerializeField] private Image staminaBackground;
 
     public float CurrentStamina { get; private set; }
 
     private float regenTimer;
 
+    public StaminaBarImageManager staminaBarManager;
+
+    public float GetCurrentStamina()
+    {
+        return CurrentStamina;
+    }
+
     private void Start()
     {
         CurrentStamina = maxStamina;
+
     }
 
     private void Update()
@@ -27,17 +37,20 @@ public class StaminaSystem : MonoBehaviour
 
     // Call this from PlayerMovement when sprinting
     public bool TrySprint(float deltaTime)
-    {
-        if (CurrentStamina > 0)
+    {  
+
+            if (CurrentStamina > 0)
         {
             CurrentStamina -= drainRate * deltaTime;
             CurrentStamina = Mathf.Clamp(CurrentStamina, 0f, maxStamina);
             regenTimer = 0f; // Reset regen delay while sprinting
             return true;
+
         }
 
         return false; // Out of stamina
     }
+
 
     // Call this from PlayerMovement when NOT sprinting
     public void RegenerateStamina(float deltaTime)

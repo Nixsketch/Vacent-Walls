@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Audio;
 
 public class CollectSystem : MonoBehaviour
