@@ -1,21 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class StaminaBarImageManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Image staminaFillImage;
+    [SerializeField] private Image staminaBackgroundImage; // Assign your Background Image here
     [SerializeField] private CanvasGroup staminaCanvasGroup;
 
     [Header("Settings")]
     [SerializeField] private float staminaMax = 100f;
     [SerializeField] private float fadeSpeed = 10f;
+    [SerializeField] private Color normalColor = Color.gray; // Or your original background color
+    [SerializeField] private Color emptyColor = Color.red;
+    [SerializeField] private float blinkSpeed = 0.15f; // Seconds per blink
 
     private float currentStamina;
     private bool isSprinting;
     private float targetAlpha;
 
-    // Updated to handle state and value simultaneously
+    // Coroutine reference to stop it when stamina recovers
+    private Coroutine blinkCoroutine;
+
     public void SetSprinting(bool sprinting, float currentStaminaValue)
     {
         isSprinting = sprinting;
@@ -25,44 +32,51 @@ public class StaminaBarImageManager : MonoBehaviour
 
     private void UpdateVisuals()
     {
-        // 1. Calculate Fill Amount
-        float fillPercent = currentStamina / staminaMax;
+        // 1. Update Fill (Normal 0-100% logic, no 50% trick)
+        staminaFillImage.fillAmount = Mathf.Clamp01(currentStamina / staminaMax);
 
-        // FIX 1: Only show 50% if stamina is TRULY empty (0). 
-        // If it's 0.1, 1.0, or anything > 0, show the actual percentage.
-        // We use a very small threshold to avoid floating point jitter.
-        if (currentStamina <= 0f)
-        {
-            staminaFillImage.fillAmount = 0.5f; // Show halfway only when completely empty
-        }
-        else
-        {
-            staminaFillImage.fillAmount = fillPercent;
-        }
-
-        // 2. Calculate Visibility (Alpha)
-        // FIX 2: The bar should be visible if:
-        // A) We are currently sprinting, OR
-        // B) We are NOT sprinting BUT stamina is not full (regenerating).
-        // It should ONLY disappear if: Not Sprinting AND Stamina is Full.
-
+        // 2. Handle Visibility
         bool isFull = currentStamina >= staminaMax;
 
+        // Visible if sprinting OR (not sprinting but not full/regenerating)
         if (isFull && !isSprinting)
-        {
-            // Only hide if fully regenerated AND not sprinting
             targetAlpha = 0f;
+        else
+            targetAlpha = 1f;
+
+        staminaCanvasGroup.alpha = Mathf.Lerp(staminaCanvasGroup.alpha, targetAlpha, fadeSpeed * Time.deltaTime);
+        if (staminaCanvasGroup.alpha < 0.01f) staminaCanvasGroup.alpha = 0f;
+
+        // 3. Handle Red Blink Logic
+        if (currentStamina <= 0f && isSprinting) // Only blink if empty AND trying to sprint
+        {
+            if (blinkCoroutine == null)
+            {
+                blinkCoroutine = StartCoroutine(BlinkBackground());
+            }
         }
         else
         {
-            // Show if sprinting OR if regenerating (not full)
-            targetAlpha = 1f;
+            if (blinkCoroutine != null)
+            {
+                StopCoroutine(blinkCoroutine);
+                blinkCoroutine = null;
+                staminaBackgroundImage.color = normalColor; // Reset color
+            }
         }
+    }
 
-        // 3. Apply Smooth Fade
-        staminaCanvasGroup.alpha = Mathf.Lerp(staminaCanvasGroup.alpha, targetAlpha, fadeSpeed * Time.deltaTime);
+    private IEnumerator BlinkBackground()
+    {
+        while (true)
+        {
+            staminaBackgroundImage.color = emptyColor; // Red
+            yield return new WaitForSeconds(blinkSpeed);
 
-        // Optimization: Snap to 0 if very close to avoid rendering invisible objects
-        if (staminaCanvasGroup.alpha < 0.01f) staminaCanvasGroup.alpha = 0f;
+            // Optional: Fade out completely or just to normal color? 
+            // Usually flashing Red -> Normal Color looks best.
+            staminaBackgroundImage.color = normalColor;
+            yield return new WaitForSeconds(blinkSpeed);
+        }
     }
 }

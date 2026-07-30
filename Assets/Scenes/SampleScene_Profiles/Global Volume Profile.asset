@@ -55,10 +55,10 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.405
+    value: 0.15
   smoothness:
     overrideState: 1
-    value: 0.191
+    value: 0.82
   roundness:
     overrideState: 1
     value: 1
@@ -191,7 +191,7 @@ MonoBehaviour:
     value: -1.15
   contrast:
     overrideState: 1
-    value: 4
+    value: 2
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -221,13 +221,13 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: -0.8765316}
+    value: {x: 1, y: 1, z: 1, w: -1}
   gamma:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: -0.047125213}
+    value: {x: 1, y: 1, z: 1, w: -0.2167765}
   gain:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: 0.25447696}
+    value: {x: 1, y: 1, z: 1, w: 0.17907639}
   masterCurve:
     overrideState: 0
     value:
@@ -237,7 +237,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
+          inSlope: 0
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -247,7 +247,7 @@ MonoBehaviour:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
