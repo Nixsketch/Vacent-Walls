@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class CollectSystem : MonoBehaviour
 {
@@ -8,12 +10,22 @@ public class CollectSystem : MonoBehaviour
     [SerializeField] private AudioClip collectSound;
     [SerializeField] private float soundVolume = 1f;
     [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private GameObject FinalDoor; // Reference to the final door GameObject
+    [SerializeField] private PlayableDirector finalDoorcutscene;
 
     private int collectCount = 0;
     private AudioSource audioSource;
 
     void Start()
     {
+        if (FinalDoor == null && collectCount < 1)
+        {
+            Debug.LogWarning("CollectSystem: FinalDoor reference is not assigned!");
+        }
+        else
+        {
+            FinalDoor.SetActive(false); // Ensure the final door is initially closed
+        }
         // Initialize the UI display
         if (collectCountText == null)
         {
@@ -35,6 +47,19 @@ public class CollectSystem : MonoBehaviour
             }
         }
     }
+    public void FinalDoorCutscene()
+    {
+        if (finalDoorcutscene != null)
+        {
+            finalDoorcutscene.Play();
+            Debug.Log("Final door cutscene played!");
+            FinalDoor.SetActive(true); // Open the final door after the cutscene
+        }
+        else
+        {
+            Debug.LogWarning("FinalDoorCutscene: finalDoorcutscene reference is not assigned!");
+        }
+    }
 
     public void CollectItem()
     {
@@ -42,6 +67,10 @@ public class CollectSystem : MonoBehaviour
         UpdateCountDisplay();
         PlayCollectSound();
         Debug.Log($"Item collected! Total: {collectCount}");
+        if (collectCount >= 1)
+        {
+            FinalDoorCutscene();
+        }
     }
 
     private void PlayCollectSound()
@@ -69,5 +98,17 @@ public class CollectSystem : MonoBehaviour
     {
         collectCount = 0;
         UpdateCountDisplay();
+    }
+    public void OpenFinalDoor()
+    {
+        if (collectCount >= 10)
+        {
+            FinalDoor.SetActive(true);
+            Debug.Log("Final door opened!");
+        }
+        else
+        {
+            Debug.LogWarning("FinalDoor reference is not assigned!");
+        }
     }
 }
