@@ -21,10 +21,10 @@ MonoBehaviour:
     value: 10
   aperture:
     overrideState: 1
-    value: 8.5
+    value: 4.6
   focalLength:
     overrideState: 1
-    value: 84
+    value: 34
   kernelSize:
     overrideState: 1
     value: 1
@@ -134,8 +134,8 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   gradingMode:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1
   externalLut:
     overrideState: 0
     value: {fileID: 0}
@@ -184,7 +184,7 @@ MonoBehaviour:
     overrideState: 1
     value: 35
   brightness:
-    overrideState: 0
+    overrideState: 1
     value: 0
   postExposure:
     overrideState: 1
@@ -227,7 +227,7 @@ MonoBehaviour:
     value: {x: 1, y: 1, z: 1, w: -0.2167765}
   gain:
     overrideState: 1
-    value: {x: 1, y: 1, z: 1, w: 0.17907639}
+    value: {x: 1, y: 1, z: 1, w: 0.14137608}
   masterCurve:
     overrideState: 0
     value:

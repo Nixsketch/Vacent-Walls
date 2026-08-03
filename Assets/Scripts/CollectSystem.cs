@@ -56,7 +56,7 @@ public class CollectSystem : MonoBehaviour
     {
         if (collectCountText != null)
         {
-            collectCountText.text = collectCount.ToString();
+            collectCountText.text = collectCount.ToString() + "/10";
         }
     }
 

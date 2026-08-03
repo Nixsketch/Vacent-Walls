@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
+  m_Color: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -643,7 +643,7 @@ GameObject:
   - component: {fileID: 954147958}
   - component: {fileID: 954147957}
   m_Layer: 5
-  m_Name: Vacent Walls
+  m_Name: Vacant Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -688,7 +688,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Vacent Walls
+  m_text: Vacant Walls
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4c5f1ddc4d746d648915d073e7d9697f, type: 2}
   m_sharedMaterial: {fileID: 4399410843533372960, guid: 4c5f1ddc4d746d648915d073e7d9697f, type: 2}
