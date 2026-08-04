@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2c4e7dac25a13bda523b187acb880019c1f0c0deefdafcb6de3a507d0801d152
-size 752
+using System;
+
+namespace UnityEngine.Rendering.PostProcessing
+{
+    /// <summary>
+    /// Use this attribute to change the label of a field displayed in the inspector.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class DisplayNameAttribute : Attribute
+    {
+        /// <summary>
+        /// The label displayed in the inspector.
+        /// </summary>
+        public readonly string displayName;
+
+        /// <summary>
+        /// Creates a new attribute.
+        /// </summary>
+        /// <param name="displayName">The label to display in the inspector</param>
+        public DisplayNameAttribute(string displayName)
+        {
+            this.displayName = displayName;
+        }
+    }
+}
