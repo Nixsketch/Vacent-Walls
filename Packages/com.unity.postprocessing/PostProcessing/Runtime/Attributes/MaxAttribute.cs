@@ -1,25 +1,3 @@
-using System;
-
-namespace UnityEngine.Rendering.PostProcessing
-{
-    /// <summary>
-    /// Use this attribute to clamp floating point values to a maximum value in the inspector.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class MaxAttribute : Attribute
-    {
-        /// <summary>
-        /// The maximum value the field will be clamped to.
-        /// </summary>
-        public readonly float max;
-
-        /// <summary>
-        /// Creates a new attribute.
-        /// </summary>
-        /// <param name="max">The maximum value the field will be clamped to</param>
-        public MaxAttribute(float max)
-        {
-            this.max = max;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:20f0d04078a0c30ccd3ceb1a05ffb5ba6b1688f25b940c7cb969c48df6040361
+size 722

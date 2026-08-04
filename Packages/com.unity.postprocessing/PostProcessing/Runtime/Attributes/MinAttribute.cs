@@ -1,25 +1,3 @@
-using System;
-
-namespace UnityEngine.Rendering.PostProcessing
-{
-    /// <summary>
-    /// Use this attribute to clamp floating point values to a minimum value in the inspector.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class MinAttribute : Attribute
-    {
-        /// <summary>
-        /// The minimum value the field will be clamped to.
-        /// </summary>
-        public readonly float min;
-
-        /// <summary>
-        /// Creates a new attribute.
-        /// </summary>
-        /// <param name="min">The minimum value the field will be clamped to</param>
-        public MinAttribute(float min)
-        {
-            this.min = min;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a43b2c37bc11aefa89b2c5d7914b93aefd55e9edf3cdd664c4e9674e0e7a451e
+size 722

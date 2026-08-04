@@ -1,19 +1,3 @@
-using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
-
-namespace UnityEditor.Rendering.PostProcessing
-{
-    static class ResourceAssetFactory
-    {
-#if POSTFX_DEBUG_MENUS
-        [MenuItem("Tools/Post-processing/Create Resources Asset")]
-#endif
-        static void CreateAsset()
-        {
-            var asset = ScriptableObject.CreateInstance<PostProcessResources>();
-            AssetDatabase.CreateAsset(asset, "Assets/PostProcessResources.asset");
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a64cafc99f983d53ddad31b354c732eb266629e3c41bdbfdc2e6c581457320ed
+size 557

@@ -1,9 +1,3 @@
-fileFormatVersion: 2
-guid: 92c63830cd50c0b4fbb8233613839958
-timeCreated: 1499691152
-licenseType: Pro
-ComputeShaderImporter:
-  currentAPIMask: 8196
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:3005383347469c729b6b81cbf282e6389d367f69cc7a9414154a7e7788e16bac
+size 203
