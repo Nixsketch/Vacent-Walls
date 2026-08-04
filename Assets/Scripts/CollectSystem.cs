@@ -18,7 +18,7 @@ public class CollectSystem : MonoBehaviour
     private AudioSource audioSource;
     void Start()
     {
-        if (FinalDoor == null && collectCount < 1)
+        if (FinalDoor == null && collectCount < 10)
         {
             Debug.LogWarning("CollectSystem: FinalDoor reference is not assigned!");
         }
@@ -68,7 +68,7 @@ public class CollectSystem : MonoBehaviour
         UpdateCountDisplay();
         PlayCollectSound();
         Debug.Log($"Item collected! Total: {collectCount}");
-        if (collectCount >= 1)
+        if (collectCount >= 10)
         {
             FinalDoorCutscene();
         }
