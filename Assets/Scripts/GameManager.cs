@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Stop player movement
-        PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+        PlayerMovement playerMovement = Object.FindAnyObjectByType<PlayerMovement>();
         if (playerMovement != null)
         {
             playerMovement.enabled = false;

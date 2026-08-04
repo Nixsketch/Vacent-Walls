@@ -7,7 +7,7 @@ public class Collectable : MonoBehaviour
     private void Start()
     {
         // Find the CollectSystem in the scene
-        collectSystem = FindObjectOfType<CollectSystem>();
+        collectSystem = FindAnyObjectByType<CollectSystem>();
         if (collectSystem == null)
         {
             Debug.LogError("CollectSystem not found in scene!");

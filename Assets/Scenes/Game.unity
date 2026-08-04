@@ -6129,7 +6129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1306881219
 Animator:
   serializedVersion: 7
@@ -6159,7 +6159,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306881218}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1306881221
 Camera:
   m_ObjectHideFlags: 0
@@ -6412,13 +6412,15 @@ PlayableDirector:
   m_PlayableAsset: {fileID: 11400000, guid: d2a1f32f7456df641b8e8ca692007366, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
-  m_DirectorUpdateMode: 1
+  m_DirectorUpdateMode: 2
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 4740789319140321330, guid: d2a1f32f7456df641b8e8ca692007366, type: 2}
     value: {fileID: 817833228}
   - key: {fileID: 1454055866393218920, guid: d2a1f32f7456df641b8e8ca692007366, type: 2}
     value: {fileID: 1306881219}
+  - key: {fileID: -728566965361245630, guid: d2a1f32f7456df641b8e8ca692007366, type: 2}
+    value: {fileID: 1306881218}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1325697034
@@ -7559,6 +7561,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: ab0f7a4d6890b514da159909876294b7, type: 2}
   FinalDoor: {fileID: 817833223}
   finalDoorcutscene: {fileID: 1325697033}
+  CutsceneCamera: {fileID: 1306881218}
 --- !u!1 &1586106945
 GameObject:
   m_ObjectHideFlags: 0

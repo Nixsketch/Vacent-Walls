@@ -12,10 +12,10 @@ public class CollectSystem : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private GameObject FinalDoor; // Reference to the final door GameObject
     [SerializeField] private PlayableDirector finalDoorcutscene;
+    [SerializeField] private GameObject CutsceneCamera;
 
     private int collectCount = 0;
     private AudioSource audioSource;
-
     void Start()
     {
         if (FinalDoor == null && collectCount < 1)
@@ -51,6 +51,7 @@ public class CollectSystem : MonoBehaviour
     {
         if (finalDoorcutscene != null)
         {
+            bool isActive = CutsceneCamera.activeSelf;
             finalDoorcutscene.Play();
             Debug.Log("Final door cutscene played!");
             FinalDoor.SetActive(true); // Open the final door after the cutscene
