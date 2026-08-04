@@ -4261,6 +4261,7 @@ GameObject:
   - component: {fileID: 817833225}
   - component: {fileID: 817833224}
   - component: {fileID: 817833228}
+  - component: {fileID: 817833229}
   m_Layer: 0
   m_Name: Final Door
   m_TagString: Untagged
@@ -4283,7 +4284,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -4384,6 +4385,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &817833229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817833223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b06ff2a3fae09174fac9c352d68fab64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorContactWin
 --- !u!1 &826424140
 GameObject:
   m_ObjectHideFlags: 0
