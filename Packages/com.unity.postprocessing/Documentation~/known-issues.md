@@ -1,5 +1,3 @@
-# Known issues
-
-- The **Post Processing** package doesn't work on MacOS X 10.11.6 when running Metal in the editor due to a driver bug on this specific version of the OS.
-
-For limitations and known issues for each effect, see the specific effect page.
+version https://git-lfs.github.com/spec/v1
+oid sha256:58363a6c5b74e43f3f631af69652dcb0a85659fdac983375ec424e61c18acace
+size 252

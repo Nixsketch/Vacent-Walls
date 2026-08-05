@@ -1,31 +1,3 @@
-Shader "Hidden/PostProcessing/DiscardAlpha"
-{
-    HLSLINCLUDE
-
-        #include "Packages/com.unity.postprocessing/PostProcessing/Shaders/StdLib.hlsl"
-
-        TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
-
-        float4 Frag(VaryingsDefault i) : SV_Target
-        {
-            float4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.texcoord);
-            return float4(color.rgb, 1.0);
-        }
-
-    ENDHLSL
-
-    SubShader
-    {
-        Cull Off ZWrite Off ZTest Always
-
-        Pass
-        {
-            HLSLPROGRAM
-
-                #pragma vertex VertDefault
-                #pragma fragment Frag
-
-            ENDHLSL
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4f9b5e9cc53870b3ea8e37295df19e09515412e80a78c5175df5a68c1a7b28b3
+size 651

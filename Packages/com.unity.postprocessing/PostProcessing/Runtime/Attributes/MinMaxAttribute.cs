@@ -1,32 +1,3 @@
-using System;
-
-namespace UnityEngine.Rendering.PostProcessing
-{
-    /// <summary>
-    /// Use this attribute to specify a range between a min and a max value.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class MinMaxAttribute : Attribute
-    {
-        /// <summary>
-        /// The minimum limit of the user defined range.
-        /// </summary>
-        public readonly float min;
-
-        /// <summary>
-        /// The maximum limit of the user defined range.
-        /// </summary>
-        public readonly float max;
-
-        /// <summary>
-        /// Creates a new attribute.
-        /// </summary>
-        /// <param name="min">The minimum limit of the user defined range</param>
-        /// <param name="max">The maximum limit of the user defined range</param>
-        public MinMaxAttribute(float min, float max)
-        {
-            this.min = min;
-            this.max = max;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e57fb3e96c4d006f6af01e53be3df81ba0d5be095c8191af7acc23e31767e2e3
+size 963
