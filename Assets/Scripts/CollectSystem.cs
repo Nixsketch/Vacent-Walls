@@ -51,7 +51,6 @@ public class CollectSystem : MonoBehaviour
     {
         if (finalDoorcutscene != null)
         {
-            bool isActive = CutsceneCamera.activeSelf;
             finalDoorcutscene.Play();
             Debug.Log("Final door cutscene played!");
             FinalDoor.SetActive(true); // Open the final door after the cutscene
@@ -60,6 +59,12 @@ public class CollectSystem : MonoBehaviour
         {
             Debug.LogWarning("FinalDoorCutscene: finalDoorcutscene reference is not assigned!");
         }
+    }
+    void Update()
+    {
+        // Optional: You can add any logic here if needed, such as checking for player input to trigger the cutscene.
+        bool isActive = CutsceneCamera.activeSelf;
+        Time.timeScale = !isActive ? 1f : 0f; // Pause or resume the game based on the cutscene state
     }
 
     public void CollectItem()

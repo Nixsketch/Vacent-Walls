@@ -66,9 +66,9 @@ public class GameManager : MonoBehaviour
         // Toggle pause screen with Escape key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            bool isActive = PauseScreenPanel != null && PauseScreenPanel.activeSelf;
             if (PauseScreenPanel != null)
             {
-                bool isActive = PauseScreenPanel.activeSelf;
                 PauseScreenPanel.SetActive(!isActive);
                 Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
                 Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
@@ -80,7 +80,19 @@ public class GameManager : MonoBehaviour
                     playerMovement.enabled = isActive; // Enable or disable player movement
                 }
             }
+            if (youDiedPanel != null)
+            {
+                youDiedPanel.SetActive(false);
 
+            }
+            else
+            {
+                Debug.LogWarning("GameManager: YouDiedPanel is not assigned in the inspector.");
+            }
+            if (PauseScreenPanel != null && PauseScreenPanel.activeSelf)
+            {
+                AudioSettingsPanel.SetActive(false); // Close audio settings if pause screen is active
+            }
         }
     }
     public void PlayerDied()
@@ -157,6 +169,22 @@ public class GameManager : MonoBehaviour
             AudioSettingsPanel.SetActive(false);
         }
     }
+    public void ResumeGame()
+    {
+        if (PauseScreenPanel != null)
+        {
+            PauseScreenPanel.SetActive(false);
+            Time.timeScale = 1f; // Resume the game
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            audioMixer.SetFloat("TrueMasterVolume", 0f); // Unmute audio
+            PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.enabled = true; // Enable player movement
+            }
+        }
+    }
 
     public void SetMasterVolume()
     {
@@ -185,7 +213,10 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the editor
+#endif
     }
 
     private void OnDestroy()
