@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider masterVolumeSlider;
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
-    [SerializeField] private GameObject PauseScreenPanel;
+    [SerializeField] public GameObject PauseScreenPanel;
     [SerializeField] private GameObject AudioSettingsPanel;
     [SerializeField] private GameObject PlayerMovement;
     [SerializeField] private AudioMixer audioMixer; // Reference to the AudioMixer for volume control 

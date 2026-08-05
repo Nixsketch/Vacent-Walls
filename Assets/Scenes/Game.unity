@@ -8354,6 +8354,7 @@ MonoBehaviour:
   FinalDoor: {fileID: 817833223}
   finalDoorcutscene: {fileID: 1325697033}
   CutsceneCamera: {fileID: 1306881218}
+  GameManager: {fileID: 2119545024}
 --- !u!1 &1586106945
 GameObject:
   m_ObjectHideFlags: 0
