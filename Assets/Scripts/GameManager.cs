@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
                 Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
                 Cursor.visible = !isActive;
-                audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -20f); // Mute or unmute audio
+                audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
                 PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
                 if (playerMovement != null)
                 {
@@ -208,6 +208,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f; // Ensure time is running
         SceneManager.LoadScene("Menu");
+        audioMixer.SetFloat("TrueMasterVolume", 0f);
     }
 
     public void QuitGame()
