@@ -5,14 +5,18 @@ public class FlashlightToggle : MonoBehaviour
 {
     public Light flashlight;
     public float maxBatteryLife = 100f;
-    public float batteryDrainRate = 2f;
+    public float batteryDrainRate = 5f;
     public Image batterydrainfill;
     public AudioSource batterydrainsound;
+    public Image flashlighton;
+    public Image flashlightoff;
 
 
     void Start()
     {
         flashlight.enabled = false;
+        flashlighton.enabled = false;
+        flashlightoff.enabled = true;
     }
     void Update()
     {
@@ -29,6 +33,18 @@ public class FlashlightToggle : MonoBehaviour
             {
                 maxBatteryLife = 0;
                 flashlight.enabled = false;
+                flashlighton.enabled = false;
+                flashlightoff.enabled = true;
+            }
+            if (flashlight.enabled) {
+                flashlighton.enabled = true;
+                flashlightoff.enabled = false;
+            }
+            else
+            {
+                flashlight.enabled = false;
+                flashlighton.enabled = false;
+                flashlightoff.enabled = true;
             }
         }
     }

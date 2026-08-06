@@ -6292,9 +6292,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightToggle
   flashlight: {fileID: 834086676}
   maxBatteryLife: 100
-  batteryDrainRate: 2
-  batterydrainfill: {fileID: 0}
+  batteryDrainRate: 5
+  batterydrainfill: {fileID: 1631061601}
   batterydrainsound: {fileID: 1231338370}
+  flashlighton: {fileID: 1866992431}
+  flashlightoff: {fileID: 2078421195}
 --- !u!82 &1231338370
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8578,7 +8580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1625029414
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9407,7 +9409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1866992430
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10025,7 +10027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1976078839
 RectTransform:
   m_ObjectHideFlags: 0
