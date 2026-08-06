@@ -6,6 +6,7 @@ public class MouseVisible : MonoBehaviour
     void Start()
     {
         Cursor.visible = true; // Make the mouse cursor visible
+        Cursor.lockState = CursorLockMode.None; // Unlock the mouse cursor
     }
 
     // Update is called once per frame
