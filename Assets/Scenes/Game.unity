@@ -6291,12 +6291,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightToggle
   flashlight: {fileID: 834086676}
+  batteryFill: {fileID: 1631061601}
+  flashlightOnIcon: {fileID: 1866992431}
+  flashlightOffIcon: {fileID: 2078421195}
+  toggleSound: {fileID: 1231338370}
   maxBatteryLife: 100
-  batteryDrainRate: 5
-  batterydrainfill: {fileID: 1631061601}
-  batterydrainsound: {fileID: 1231338370}
-  flashlighton: {fileID: 1866992431}
-  flashlightoff: {fileID: 2078421195}
+  currentBatteryLife: 100
+  drainRate: 6
+  rechargeRate: 20
+  clickSound: {fileID: 8300000, guid: c6c12daee7207da41b31c9bc7da18321, type: 3}
+  deadSound: {fileID: 8300000, guid: d951648614dd61744832ac6c9638985d, type: 3}
+  rechargeSound: {fileID: 8300000, guid: 272139c023855fe43b569bfd73ccbe7a, type: 3}
 --- !u!82 &1231338370
 AudioSource:
   m_ObjectHideFlags: 0

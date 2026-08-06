@@ -3,49 +3,102 @@ using UnityEngine.UI;
 
 public class FlashlightToggle : MonoBehaviour
 {
+    [Header("References")]
     public Light flashlight;
-    public float maxBatteryLife = 100f;
-    public float batteryDrainRate = 5f;
-    public Image batterydrainfill;
-    public AudioSource batterydrainsound;
-    public Image flashlighton;
-    public Image flashlightoff;
+    public Image batteryFill;
+    public Image flashlightOnIcon;
+    public Image flashlightOffIcon;
+    public AudioSource toggleSound;
 
+    [Header("Battery Settings")]
+    public float maxBatteryLife = 100f;
+    public float currentBatteryLife = 100f;
+    public float drainRate = 6f;
+    public float rechargeRate = 20f;
+
+    [Header("Audio Settings")]
+    public AudioClip clickSound;
+    public AudioClip deadSound; // Optional: play a "dead" buzz when battery dies
+    public AudioClip rechargeSound;
+
+    private bool isOn = false;
+    private bool isBatteryDead = false; // New state tracker
 
     void Start()
     {
-        flashlight.enabled = false;
-        flashlighton.enabled = false;
-        flashlightoff.enabled = true;
+        currentBatteryLife = maxBatteryLife;
+        SetFlashlightState(false);
     }
+
     void Update()
     {
+        // 1. Handle Toggle Input (Only if battery is not dead)
         if (Input.GetKeyDown(KeyCode.F))
         {
-            flashlight.enabled = !flashlight.enabled;
-            batterydrainsound = GetComponent<AudioSource>();
-            batterydrainsound.loop = false;
-            batterydrainsound.volume = 1.0f;
-            batterydrainsound.Play();
+            ToggleFlashlight();
+        }
 
-            if (flashlight.enabled) { maxBatteryLife -= batteryDrainRate * Time.deltaTime; }
-            if (maxBatteryLife < 0)
+        // 2. Handle Battery Logic
+        if (isOn)
+        {
+            // Drain battery
+            currentBatteryLife -= drainRate * Time.deltaTime;
+
+            // Check for empty battery
+            if (currentBatteryLife <= 0)
             {
-                maxBatteryLife = 0;
-                flashlight.enabled = false;
-                flashlighton.enabled = false;
-                flashlightoff.enabled = true;
-            }
-            if (flashlight.enabled) {
-                flashlighton.enabled = true;
-                flashlightoff.enabled = false;
-            }
-            else
-            {
-                flashlight.enabled = false;
-                flashlighton.enabled = false;
-                flashlightoff.enabled = true;
+                currentBatteryLife = 0;
+                isBatteryDead = true; // Lock the toggle
+                SetFlashlightState(false); // Force turn off
+                toggleSound.PlayOneShot(deadSound); // Optional: Play dead sound
             }
         }
+        else
+        {
+            // Recharge battery when off
+            currentBatteryLife += rechargeRate * Time.deltaTime;
+
+            // Cap at max
+            if (currentBatteryLife >= maxBatteryLife)
+            {
+                currentBatteryLife = maxBatteryLife;
+                isBatteryDead = false; // Unlock the toggle
+            }
+        }
+
+        // 3. Update UI
+        if (batteryFill != null)
+        {
+            batteryFill.fillAmount = currentBatteryLife / maxBatteryLife;
+        }
+
+        // Optional: Visual feedback for dead battery (e.g., change icon color)
+        if (flashlightOffIcon != null && isBatteryDead)
+        {
+             flashlightOffIcon.color = Color.red; // Uncomment to turn red when dead
+        }
+        else { 
+        flashlightOffIcon.color = Color.white;} // Uncomment to turn white when not dead
+    }
+
+    void ToggleFlashlight()
+    {
+        isOn = !isOn;
+        SetFlashlightState(isOn);
+        toggleSound.PlayOneShot(clickSound);
+    }
+
+    void SetFlashlightState(bool state)
+    {
+        isOn = state;
+
+        if (flashlight != null)
+            flashlight.enabled = isOn;
+
+        if (flashlightOnIcon != null)
+            flashlightOnIcon.enabled = isOn;
+
+        if (flashlightOffIcon != null)
+            flashlightOffIcon.enabled = !isOn;
     }
 }
