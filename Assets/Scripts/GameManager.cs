@@ -69,29 +69,39 @@ public class GameManager : MonoBehaviour
             bool isActive = PauseScreenPanel != null && PauseScreenPanel.activeSelf;
             if (PauseScreenPanel != null)
             {
-                PauseScreenPanel.SetActive(!isActive);
-                Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
-                Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
-                Cursor.visible = !isActive;
-                audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
-                PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
-                if (playerMovement != null)
+                if (youDiedPanel.activeSelf)
                 {
-                    playerMovement.enabled = isActive; // Enable or disable player movement
+                    return; // Don't allow pausing if the player has died
                 }
-            }
-            if (youDiedPanel != null)
-            {
-                youDiedPanel.SetActive(false);
-
-            }
-            else
-            {
-                Debug.LogWarning("GameManager: YouDiedPanel is not assigned in the inspector.");
-            }
-            if (PauseScreenPanel != null && PauseScreenPanel.activeSelf)
-            {
-                AudioSettingsPanel.SetActive(false); // Close audio settings if pause screen is active
+                else if (jumpscareVideoPanel.activeSelf)
+                {
+                    return; // Don't allow pausing if the jumpscare video is playing
+                }
+                else
+                {
+                    PauseScreenPanel.SetActive(!isActive);
+                    Time.timeScale = isActive ? 1f : 0f; // Resume or pause the game
+                    Cursor.lockState = isActive ? CursorLockMode.Locked : CursorLockMode.Confined;
+                    Cursor.visible = !isActive;
+                    audioMixer.SetFloat("TrueMasterVolume", isActive ? 0f : -80f); // Mute or unmute audio
+                    PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+                    if (playerMovement != null)
+                    {
+                        playerMovement.enabled = isActive; // Enable or disable player movement
+                    }
+                }
+                if (youDiedPanel != null)
+                {
+                    youDiedPanel.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogWarning("GameManager: YouDiedPanel is not assigned in the inspector.");
+                }
+                if (PauseScreenPanel != null && PauseScreenPanel.activeSelf)
+                {
+                    AudioSettingsPanel.SetActive(false); // Close audio settings if pause screen is active
+                }
             }
         }
     }
