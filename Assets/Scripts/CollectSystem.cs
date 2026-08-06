@@ -79,7 +79,7 @@ public class CollectSystem : MonoBehaviour
         UpdateCountDisplay();
         PlayCollectSound();
         Debug.Log($"Item collected! Total: {collectCount}");
-        if (collectCount >= 1)
+        if (collectCount >= 10)
         {
             FinalDoorCutscene();
         }
