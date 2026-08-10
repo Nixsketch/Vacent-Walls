@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 2c80f94111dbad44babed5e4a1e97114
+timeCreated: 1480273425
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212677
+  packageName: Game Quality Settings
+  packageVersion: 1.2.1
+  assetPath: Assets/Game_QualitySettings/Scripts/Display_FPS.cs
+  uploadId: 480647

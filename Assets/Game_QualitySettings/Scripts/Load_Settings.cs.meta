@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: eb9ce832ab8818449b37c25d27c1d5b7
+timeCreated: 1481044877
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212677
+  packageName: Game Quality Settings
+  packageVersion: 1.2.1
+  assetPath: Assets/Game_QualitySettings/Scripts/Load_Settings.cs
+  uploadId: 480647

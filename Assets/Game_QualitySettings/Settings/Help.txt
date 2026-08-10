@@ -1,0 +1,10 @@
+You should have only 3 settings modes (low, medium, high)
+Game quality settin's script will choose based on index : 
+0 = Low
+1 = Medium
+2 = High
+
+You can see the settings I used for Mobile  in images that are in the "Settings" folder
+
+Note: You can customize these settings. For example, change the distance of the shadows.
+ Or turn on Vsync ...

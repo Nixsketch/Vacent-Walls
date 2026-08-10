@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 427013a46d096324182a25648487920f
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212677
+  packageName: Game Quality Settings
+  packageVersion: 1.2.1
+  assetPath: Assets/Game_QualitySettings/Settings/Help.txt
+  uploadId: 480647

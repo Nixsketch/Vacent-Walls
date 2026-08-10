@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: db925c6905f4b9144bf793d8b0ae2e97
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212677
+  packageName: Game Quality Settings
+  packageVersion: 1.2.1
+  assetPath: Assets/Game_QualitySettings/Prefabs/Settings-Menu.prefab
+  uploadId: 480647
