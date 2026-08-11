@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] public GameObject QualitySettingsPanel;
+    [SerializeField] public GameObject ControlsSettingsPanel;
+    [SerializeField] public GameObject MainSettingsPanel;
     [SerializeField] private GameObject playerModel;
     [SerializeField] private GameObject youDiedPanel;
     [SerializeField] private GameObject jumpscareVideoPanel;
@@ -52,7 +55,18 @@ public class GameManager : MonoBehaviour
             PauseScreenPanel.SetActive(false);
 
         }
-
+        if (MainSettingsPanel != null)
+        {
+            MainSettingsPanel.SetActive(false);
+        }
+        if (QualitySettingsPanel != null)
+        {
+            QualitySettingsPanel.SetActive(false);
+        }
+        if (ControlsSettingsPanel != null)
+        {
+            ControlsSettingsPanel.SetActive(false);
+        }
         // Setup video player to call ShowDeathScreen when video ends
         if (videoPlayer != null)
         {
@@ -101,6 +115,9 @@ public class GameManager : MonoBehaviour
                 if (PauseScreenPanel != null && PauseScreenPanel.activeSelf)
                 {
                     AudioSettingsPanel.SetActive(false); // Close audio settings if pause screen is active
+                    QualitySettingsPanel.SetActive(false); // Close quality settings if pause screen is active
+                    ControlsSettingsPanel.SetActive(false); // Close controls settings if pause screen is active
+                    MainSettingsPanel.SetActive(false); // Close main settings if pause screen is active
                 }
             }
         }
@@ -165,6 +182,22 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f; // Ensure time is running
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void OpenMainSettings()
+    {
+        if (MainSettingsPanel != null)
+        {
+            MainSettingsPanel.SetActive(true);
+        }
+    }
+
+    public void CloseMainSettings()
+    {
+        if (MainSettingsPanel != null)
+        {
+            MainSettingsPanel.SetActive(false);
+        }
+    }
     public void OpenAudioSettings()
     {
         if (AudioSettingsPanel != null)
@@ -179,6 +212,37 @@ public class GameManager : MonoBehaviour
             AudioSettingsPanel.SetActive(false);
         }
     }
+    public void OpenQualitySettings()
+    {
+        if (QualitySettingsPanel != null)
+        {
+            QualitySettingsPanel.SetActive(true);
+        }
+    }
+    public void CloseQualitySettings()
+    {
+        if (QualitySettingsPanel != null)
+        {
+            QualitySettingsPanel.SetActive(false);
+        }
+    }
+    public void OpenControlsSettings()
+    {
+        if (ControlsSettingsPanel != null)
+        {
+            ControlsSettingsPanel.SetActive(true);
+        }
+    }
+
+
+    public void CloseControlsSettings()
+    {
+        if (ControlsSettingsPanel != null)
+        {
+            ControlsSettingsPanel.SetActive(false);
+        }
+    }
+
     public void ResumeGame()
     {
         if (PauseScreenPanel != null)

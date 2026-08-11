@@ -11,6 +11,21 @@ public class SettingsMenu : MonoBehaviour
         // Clear default options in the inspector
         qualityDropdown.ClearOptions();
 
+        // If no save exists AND the current editor level is Potato (0)
+        if (!PlayerPrefs.HasKey("QualitySetting") && QualitySettings.GetQualityLevel() == 0)
+        {
+            // Force default to Medium (2)
+            QualitySettings.SetQualityLevel(2);
+        }
+        else if (PlayerPrefs.HasKey("QualitySetting"))
+        {
+            // Load saved preference
+            QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("QualitySetting"));
+        }
+
+    // Update UI
+    qualityDropdown.value = QualitySettings.GetQualityLevel();
+
         // Create a list from the built-in names array (includes "Potato")
         List<string> options = new List<string>(QualitySettings.names);
         

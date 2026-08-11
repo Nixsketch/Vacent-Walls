@@ -1290,7 +1290,7 @@ GameObject:
   - component: {fileID: 5083101545210299625}
   - component: {fileID: 4798222185876302793}
   m_Layer: 5
-  m_Name: Quality settings
+  m_Name: Quality settings panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
