@@ -1,35 +1,3 @@
-using UnityEngine;
-using UnityEngine.UI;
-
-public class FlashlightToggle : MonoBehaviour
-{
-    public Light flashlight;
-    public float maxBatteryLife = 100f;
-    public float batteryDrainRate = 2f;
-    public Image batterydrainfill;
-    public AudioSource batterydrainsound;
-
-
-    void Start()
-    {
-        flashlight.enabled = false;
-    }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            flashlight.enabled = !flashlight.enabled;
-            batterydrainsound = GetComponent<AudioSource>();
-            batterydrainsound.loop = false;
-            batterydrainsound.volume = 1.0f;
-            batterydrainsound.Play();
-
-            if (flashlight.enabled) { maxBatteryLife -= batteryDrainRate * Time.deltaTime; }
-            if (maxBatteryLife < 0)
-            {
-                maxBatteryLife = 0;
-                flashlight.enabled = false;
-            }
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4d91fdb2e5c3552b5eb6ec46dce6efe8e3a446211db45c61f3df438a04222e92
+size 2982
