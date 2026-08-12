@@ -17,6 +17,10 @@ public class GameManagerMenu : MonoBehaviour
     [SerializeField] private GameObject AudioSettingsPanel;
     [SerializeField] private AudioMixer audioMixer; // Reference to the AudioMixer for volume control 
 
+    private const string MasterVolumeKey = "MasterVolumeSlider";
+    private const string MusicVolumeKey = "MusicVolumeSlider";
+    private const string SfxVolumeKey = "SFXVolumeSlider";
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -47,8 +51,34 @@ public class GameManagerMenu : MonoBehaviour
             ControlsSettingsPanel.SetActive(false);
         }
 
+        LoadSavedAudioSliderValues();
     }
 
+    private void LoadSavedAudioSliderValues()
+    {
+        if (masterVolumeSlider != null)
+        {
+            masterVolumeSlider.value = PlayerPrefs.GetFloat(MasterVolumeKey, masterVolumeSlider.value);
+        }
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.value = PlayerPrefs.GetFloat(MusicVolumeKey, musicVolumeSlider.value);
+        }
+        if (sfxVolumeSlider != null)
+        {
+            sfxVolumeSlider.value = PlayerPrefs.GetFloat(SfxVolumeKey, sfxVolumeSlider.value);
+        }
+
+        SetMasterVolume();
+        SetMusicVolume();
+        SetSFXVolume();
+    }
+
+    private void SaveAudioSliderValue(string key, float value)
+    {
+        PlayerPrefs.SetFloat(key, value);
+        PlayerPrefs.Save();
+    }
 
 
     public void OpenMainSettings()
@@ -113,20 +143,29 @@ public class GameManagerMenu : MonoBehaviour
 
     public void SetMasterVolume()
     {
+        if (masterVolumeSlider == null || audioMixer == null) return;
+
         float value = Mathf.Max(masterVolumeSlider.value, 0.0001f);
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20f);
+        SaveAudioSliderValue(MasterVolumeKey, masterVolumeSlider.value);
     }
 
     public void SetMusicVolume()
     {
+        if (musicVolumeSlider == null || audioMixer == null) return;
+
         float value = Mathf.Max(musicVolumeSlider.value, 0.0001f);
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20f);
+        SaveAudioSliderValue(MusicVolumeKey, musicVolumeSlider.value);
     }
 
     public void SetSFXVolume()
     {
+        if (sfxVolumeSlider == null || audioMixer == null) return;
+
         float value = Mathf.Max(sfxVolumeSlider.value, 0.0001f);
         audioMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20f);
+        SaveAudioSliderValue(SfxVolumeKey, sfxVolumeSlider.value);
     }
 
     public void ReturntoMainMenu()
