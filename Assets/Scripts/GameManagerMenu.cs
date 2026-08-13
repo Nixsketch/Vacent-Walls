@@ -15,6 +15,7 @@ public class GameManagerMenu : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private GameObject AudioSettingsPanel;
+    [SerializeField] private GameObject CreditsPanel;
     [SerializeField] private AudioMixer audioMixer; // Reference to the AudioMixer for volume control 
 
     private const string MasterVolumeKey = "MasterVolumeSlider";
@@ -50,7 +51,10 @@ public class GameManagerMenu : MonoBehaviour
         {
             ControlsSettingsPanel.SetActive(false);
         }
-
+        if (CreditsPanel != null)
+        {
+            CreditsPanel.SetActive(false);
+        }
         LoadSavedAudioSliderValues();
     }
 
@@ -129,6 +133,20 @@ public class GameManagerMenu : MonoBehaviour
         if (ControlsSettingsPanel != null)
         {
             ControlsSettingsPanel.SetActive(true);
+        }
+    }
+    public void OpenCreditsPanel()
+    {
+        if (CreditsPanel != null)
+        {
+            CreditsPanel.SetActive(true);
+        }
+    }
+    public void CloseCreditsPanel()
+    {
+        if (CreditsPanel != null)
+        {
+            CreditsPanel.SetActive(false);
         }
     }
 
