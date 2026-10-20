@@ -1,15 +1,3 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class DoorContactWin : MonoBehaviour
-{
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Load the next scene when the player enters the trigger
-            SceneManager.LoadScene("Win Screen");
-        }
-    }
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:8c66233e20e5ffa22c643397a031f857bf1f91856260e6b153cfc778c0242623
+size 527
